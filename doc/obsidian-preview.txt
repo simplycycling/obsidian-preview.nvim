@@ -1,0 +1,86 @@
+*obsidian-preview.txt*  Preview the current buffer in Obsidian's Reading View
+
+==============================================================================
+CONTENTS                                          *obsidian-preview-contents*
+
+  1. Introduction .............. |obsidian-preview-intro|
+  2. Setup ..................... |obsidian-preview-setup|
+  3. Configuration ............. |obsidian-preview-config|
+  4. Commands .................. |obsidian-preview-commands|
+  5. Reading View .............. |obsidian-preview-reading-view|
+  6. Platform Notes ............ |obsidian-preview-platform|
+
+==============================================================================
+1. Introduction                                     *obsidian-preview-intro*
+
+obsidian-preview.nvim syncs the current Neovim buffer to a temporary file
+inside your Obsidian vault and opens it in Obsidian. As you type, the file is
+updated (with debouncing) and Obsidian re-renders it automatically.
+
+When you switch to a different markdown buffer, the preview follows.
+
+==============================================================================
+2. Setup                                            *obsidian-preview-setup*
+
+Call `setup()` in your Neovim config. If you use obsidian.nvim, the vault
+path is detected automatically and you can omit `vault_path`: >lua
+
+  require("obsidian_preview").setup()
+<
+
+With explicit options: >lua
+
+  require("obsidian_preview").setup({
+    vault_path = "~/Documents/MyVault",
+    debounce_ms = 500,
+  })
+<
+
+==============================================================================
+3. Configuration                                   *obsidian-preview-config*
+
+All options and their defaults:
+
+  vault_path    (string|nil)  Absolute path to your Obsidian vault.
+                              Auto-detected from obsidian.nvim if nil.
+                              Default: nil
+
+  debounce_ms   (number)      Milliseconds to wait after the last keystroke
+                              before writing to disk.
+                              Default: 300
+
+==============================================================================
+4. Commands                                      *obsidian-preview-commands*
+
+:ObsidianPreviewStart                           *:ObsidianPreviewStart*
+  Sync the current buffer to a preview file in the vault and open it in
+  Obsidian. Begins following the active markdown buffer.
+
+:ObsidianPreviewStop                             *:ObsidianPreviewStop*
+  Stop syncing, remove all temp preview files, and clear autocmds.
+
+:ObsidianPreviewToggle                         *:ObsidianPreviewToggle*
+  Toggle preview on or off.
+
+==============================================================================
+5. Reading View                                *obsidian-preview-reading-view*
+
+Obsidian has no URI parameter to force a file open in Reading View. To get
+the best experience, set Obsidian's default view to Reading View once:
+
+  Obsidian → Settings → Editor → Default view for new tabs → Reading View
+
+After this, every preview file opened by this plugin will render in Reading
+View automatically.
+
+==============================================================================
+6. Platform Notes                               *obsidian-preview-platform*
+
+macOS   Uses `open obsidian://open?path=...` (detected automatically).
+Linux   Uses `xdg-open obsidian://open?path=...` (detected automatically).
+        Requires the Obsidian AppImage/Flatpak to handle the obsidian:// URI.
+
+Windows is not currently supported.
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:
