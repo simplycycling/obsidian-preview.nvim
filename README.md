@@ -47,6 +47,26 @@ Then in your init.lua:
 require("obsidian_preview").setup()
 ```
 
+### vim.pack (built-in)
+
+Clone the repo into Neovim's pack directory:
+
+```sh
+git clone https://github.com/your-username/obsidian-preview.nvim \
+  ~/.local/share/nvim/site/pack/plugins/start/obsidian-preview.nvim
+```
+
+Then add the setup call to your `init.lua`:
+
+```lua
+require("obsidian_preview").setup({
+  -- vault_path is auto-detected from obsidian.nvim if you use it
+  -- vault_path = "~/Documents/MyVault",
+})
+```
+
+The `start/` directory means the plugin loads automatically. No extra `packadd` call needed.
+
 ## Configuration
 
 | Option | Type | Default | Description |
