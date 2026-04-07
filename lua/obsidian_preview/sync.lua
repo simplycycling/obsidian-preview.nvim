@@ -30,7 +30,12 @@ local function write_to_disk(path, lines)
     vim.notify("ObsidianPreview: could not write to " .. path, vim.log.levels.ERROR)
     return
   end
-  f:write(table.concat(lines, "\n"))
+  local content = table.concat(lines, "\n")
+  -- Obsidian refuses to open zero-byte files; ensure at least a newline exists
+  if content == "" then
+    content = "\n"
+  end
+  f:write(content)
   f:close()
 end
 

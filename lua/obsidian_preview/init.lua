@@ -65,14 +65,15 @@ function M.start()
   preview_files[bufnr] = path
   open_in_obsidian(path)
 
-  -- Debounced sync on every text change
+  -- Debounced sync on every text change.
+  -- Only sync buffers that have an active preview — this handles non-.md files
+  -- and unnamed buffers that the user explicitly started a preview on.
   vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
     group = preview_augroup,
     callback = function()
       local cur = vim.api.nvim_get_current_buf()
-      if is_markdown(cur) then
+      if preview_files[cur] then
         sync.debounced_sync(cur)
-        preview_files[cur] = sync.path_for(cur)
       end
     end,
   })
