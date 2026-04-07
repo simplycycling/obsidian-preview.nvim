@@ -2,7 +2,7 @@
 
 Preview the current Neovim buffer in Obsidian's Reading View, live as you type.
 
-Works like `markdown-preview.nvim` but targets Obsidian instead of a browser — useful when you want Obsidian's wiki-link rendering, callouts, dataview output, or theme.
+Inspired by `markdown-preview.nvim` but targets Obsidian instead of a browser — useful when you want Obsidian's wiki-link rendering, callouts, dataview output, or theme. Or, like me, you're only writing markdown files for Obsidian, not the internet, and it's more relevant than a browser.
 
 ## How it works
 
@@ -24,11 +24,11 @@ Works like `markdown-preview.nvim` but targets Obsidian instead of a browser —
 
 ```lua
 {
-  "your-username/obsidian-preview.nvim",
+  "simplycycling/obsidian-preview.nvim",
   config = function()
     require("obsidian_preview").setup({
       -- vault_path is auto-detected from obsidian.nvim if you use it
-      -- vault_path = "~/Documents/MyVault",
+      -- vault_path = "~/Documents/MyVault" or whatever,
       debounce_ms = 300,
     })
   end,
@@ -38,7 +38,7 @@ Works like `markdown-preview.nvim` but targets Obsidian instead of a browser —
 ### vim-plug
 
 ```vim
-Plug 'your-username/obsidian-preview.nvim'
+Plug 'simplycycling/obsidian-preview.nvim'
 ```
 
 Then in your init.lua:
@@ -52,7 +52,7 @@ require("obsidian_preview").setup()
 Clone the repo into Neovim's pack directory:
 
 ```sh
-git clone https://github.com/your-username/obsidian-preview.nvim \
+git clone https://github.com/simplycycling/obsidian-preview.nvim \
   ~/.local/share/nvim/site/pack/plugins/start/obsidian-preview.nvim
 ```
 
@@ -61,7 +61,7 @@ Then add the setup call to your `init.lua`:
 ```lua
 require("obsidian_preview").setup({
   -- vault_path is auto-detected from obsidian.nvim if you use it
-  -- vault_path = "~/Documents/MyVault",
+  -- vault_path = "~/Documents/MyVault" or, you know, wherever you keep it,
 })
 ```
 
