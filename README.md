@@ -94,4 +94,4 @@ After that, every file opened by this plugin will render in Reading View automat
 
 - **macOS**: uses the `open` command (detected automatically)
 - **Linux**: uses `xdg-open` (detected automatically); requires Obsidian to handle `obsidian://` URIs
-- **Windows**: not currently supported
+- **Windows**: not currently supported 😭
