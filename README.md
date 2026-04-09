@@ -91,6 +91,10 @@ Obsidian has no URI parameter to force a file open in Reading View. Set this onc
 
 After that, every file opened by this plugin will render in Reading View automatically.
 
+## Known behaviour
+
+- **Focus shift on start**: On macOS, `:ObsidianPreviewStart` will bring Obsidian to the foreground. This is a side effect of how macOS handles the `open` command and is not currently avoidable. Click back on your terminal or use your window manager to return focus to Neovim after starting the preview. Subsequent buffer switches update the Obsidian view silently without stealing focus.
+
 ## Platform notes
 
 - **macOS**: uses the `open` command (detected automatically)

@@ -19,15 +19,20 @@ local function is_markdown(bufnr)
   return vim.api.nvim_get_option_value("filetype", { buf = bufnr }) == "markdown"
 end
 
-local function open_in_obsidian(path)
+--- Open a file in Obsidian.
+--- background=true uses `open -g` on macOS to navigate without stealing focus.
+--- background=false (the default, used on first start) brings Obsidian to front.
+local function open_in_obsidian(path, background)
   if vim.fn.has("mac") == 1 then
-    -- First ensure Obsidian is running and focused, then navigate to the file.
-    -- Sending the URI directly to a cold or unfocused Obsidian can cause it to
-    -- report the file as not found; the two-step approach avoids that.
-    vim.fn.jobstart({ "open", "-a", "Obsidian" }, { detach = true })
-    vim.defer_fn(function()
-      vim.fn.jobstart({ "open", "obsidian://open?path=" .. path }, { detach = true })
-    end, config.options.open_delay_ms)
+    if background then
+      vim.fn.jobstart({ "open", "-g", "obsidian://open?path=" .. path }, { detach = true })
+    else
+      -- First ensure Obsidian is running and focused, then navigate to the file.
+      vim.fn.jobstart({ "open", "-a", "Obsidian" }, { detach = true })
+      vim.defer_fn(function()
+        vim.fn.jobstart({ "open", "obsidian://open?path=" .. path }, { detach = true })
+      end, config.options.open_delay_ms)
+    end
   else
     vim.fn.jobstart({ "xdg-open", "obsidian://open?path=" .. path }, { detach = true })
   end
@@ -86,7 +91,8 @@ function M.start()
     end,
   })
 
-  -- Follow the active buffer: sync + navigate Obsidian when entering a new markdown buffer
+  -- Follow the active buffer: sync + navigate Obsidian when entering a new markdown buffer.
+  -- Uses background mode so Obsidian updates without stealing focus from Neovim.
   vim.api.nvim_create_autocmd("BufEnter", {
     group = preview_augroup,
     callback = function()
@@ -94,7 +100,7 @@ function M.start()
       if is_markdown(cur) then
         local p = sync.sync(cur)
         preview_files[cur] = p
-        open_in_obsidian(p)
+        open_in_obsidian(p, true)
       end
     end,
   })
