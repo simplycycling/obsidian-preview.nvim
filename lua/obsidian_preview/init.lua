@@ -59,11 +59,14 @@ function M.start()
 
   active = true
 
-  -- Sync current buffer immediately and open Obsidian
+  -- Sync current buffer immediately, then open Obsidian after a short delay.
+  -- The delay gives Obsidian time to index a newly created file before the URI fires.
   local bufnr = vim.api.nvim_get_current_buf()
   local path = sync.sync(bufnr)
   preview_files[bufnr] = path
-  open_in_obsidian(path)
+  vim.defer_fn(function()
+    open_in_obsidian(path)
+  end, 150)
 
   -- Debounced sync on every text change.
   -- Only sync buffers that have an active preview — this handles non-.md files
