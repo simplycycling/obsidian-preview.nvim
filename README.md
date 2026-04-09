@@ -73,6 +73,7 @@ The `start/` directory means the plugin loads automatically. No extra `packadd` 
 |---|---|---|---|
 | `vault_path` | `string\|nil` | `nil` | Path to your Obsidian vault. Auto-detected from obsidian.nvim if not set. |
 | `debounce_ms` | `number` | `300` | Milliseconds to wait after the last keystroke before writing to disk. |
+| `open_delay_ms` | `number` | `500` | Milliseconds to wait after writing the preview file before opening Obsidian. Increase if Obsidian reports it cannot find the file on startup. |
 
 ## Commands
 

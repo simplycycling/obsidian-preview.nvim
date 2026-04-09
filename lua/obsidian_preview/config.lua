@@ -3,6 +3,7 @@ local M = {}
 M.defaults = {
   vault_path = nil, -- auto-detected from obsidian.nvim if not set
   debounce_ms = 300,
+  open_delay_ms = 500, -- delay before opening Obsidian, to allow file indexing
 }
 
 M.options = {}

@@ -66,7 +66,7 @@ function M.start()
   preview_files[bufnr] = path
   vim.defer_fn(function()
     open_in_obsidian(path)
-  end, 150)
+  end, config.options.open_delay_ms)
 
   -- Debounced sync on every text change.
   -- Only sync buffers that have an active preview — this handles non-.md files

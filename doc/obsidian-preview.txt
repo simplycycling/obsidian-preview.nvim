@@ -49,6 +49,12 @@ All options and their defaults:
                               before writing to disk.
                               Default: 300
 
+  open_delay_ms (number)      Milliseconds to wait after writing the preview
+                              file before opening it in Obsidian. Increase
+                              this if Obsidian reports it cannot find the file
+                              on startup.
+                              Default: 500
+
 ==============================================================================
 4. Commands                                      *obsidian-preview-commands*
 
