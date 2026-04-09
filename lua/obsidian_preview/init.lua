@@ -20,9 +20,17 @@ local function is_markdown(bufnr)
 end
 
 local function open_in_obsidian(path)
-  -- macOS: use `open`; on Linux swap for `xdg-open`
-  local opener = vim.fn.has("mac") == 1 and "open" or "xdg-open"
-  vim.fn.jobstart({ opener, "obsidian://open?path=" .. path }, { detach = true })
+  if vim.fn.has("mac") == 1 then
+    -- First ensure Obsidian is running and focused, then navigate to the file.
+    -- Sending the URI directly to a cold or unfocused Obsidian can cause it to
+    -- report the file as not found; the two-step approach avoids that.
+    vim.fn.jobstart({ "open", "-a", "Obsidian" }, { detach = true })
+    vim.defer_fn(function()
+      vim.fn.jobstart({ "open", "obsidian://open?path=" .. path }, { detach = true })
+    end, config.options.open_delay_ms)
+  else
+    vim.fn.jobstart({ "xdg-open", "obsidian://open?path=" .. path }, { detach = true })
+  end
 end
 
 --- Set up the VimLeavePre handler once at setup time so it survives stop().
@@ -59,14 +67,11 @@ function M.start()
 
   active = true
 
-  -- Sync current buffer immediately, then open Obsidian after a short delay.
-  -- The delay gives Obsidian time to index a newly created file before the URI fires.
+  -- Sync current buffer immediately and open Obsidian
   local bufnr = vim.api.nvim_get_current_buf()
   local path = sync.sync(bufnr)
   preview_files[bufnr] = path
-  vim.defer_fn(function()
-    open_in_obsidian(path)
-  end, config.options.open_delay_ms)
+  open_in_obsidian(path)
 
   -- Debounced sync on every text change.
   -- Only sync buffers that have an active preview — this handles non-.md files
