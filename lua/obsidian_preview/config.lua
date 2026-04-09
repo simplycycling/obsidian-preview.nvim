@@ -53,7 +53,7 @@ function M.setup(opts)
   end
 
   if M.options.vault_path then
-    M.options.vault_path = vim.fn.expand(M.options.vault_path)
+    M.options.vault_path = vim.fn.expand(M.options.vault_path):gsub("/$", "")
   end
 end
 
