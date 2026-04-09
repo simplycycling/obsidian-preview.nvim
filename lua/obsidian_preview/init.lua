@@ -76,6 +76,7 @@ function M.start()
   local bufnr = vim.api.nvim_get_current_buf()
   local path = sync.sync(bufnr)
   preview_files[bufnr] = path
+  vim.notify("ObsidianPreview DEBUG: vault=" .. tostring(config.options.vault_path) .. " path=" .. path, vim.log.levels.INFO)
   open_in_obsidian(path)
 
   -- Debounced sync on every text change.
